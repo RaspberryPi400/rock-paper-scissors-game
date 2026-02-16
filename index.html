@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors Game</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding-top: 50px; background: #f4f4f4; }
+        .container { background: white; padding: 20px; border-radius: 8px; display: inline-block; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; margin: 5px; }
+        #log { margin-top: 20px; white-space: pre-wrap; color: #333; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Rock, Paper, Scissors</h1>
+    <p>Choose your move:</p>
+    <button onclick="play('rock')">Rock</button>
+    <button onclick="play('paper')">Paper</button>
+    <button onclick="play('scissors')">Scissors</button>
+    <div id="log"></div>
+</div>
+
+<script>
+    let bot = "rock";
+    const choiceList = ["rock", "paper", "scissors"];
+    const logDiv = document.getElementById('log');
+
+    function play(user) {
+        let resultText = `The computer chose ${bot}.\n`;
+        let outcome = "";
+
+        if (user === bot) {
+            outcome = "Tie! Go again.";
+            bot = choiceList[Math.floor(Math.random() * choiceList.length)];
+        } 
+        else if (
+            (user === "rock" && bot === "scissors") ||
+            (user === "paper" && bot === "rock") ||
+            (user === "scissors" && bot === "paper")
+        ) {
+            outcome = "Player wins!";
+            if (bot === "rock") bot = "scissors";
+            else if (bot === "paper") bot = "rock";
+            else if (bot === "scissors") bot = "paper";
+        } 
+        else {
+            outcome = "Computer wins!";
+            if (bot === "rock") bot = "paper";
+            else if (bot === "paper") bot = "scissors";
+            else if (bot === "scissors") bot = "rock";
+        }
+
+        logDiv.innerText = resultText + outcome;
+
+        setTimeout(() => {
+            if (!confirm(outcome + "\n\nWould you like to go again?")) {
+                logDiv.innerText = "Exiting... Refresh to play again.";
+                document.querySelectorAll('button').forEach(b => b.disabled = true);
+            }
+        }, 100);
+    }
+</script>
+
+</body>
+</html>
